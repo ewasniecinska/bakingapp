@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Awesome Baking </string>
+    <string name="title_activity_detaild">DetaildActivity</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="title_activity_step">StepActivity</string>
+
+    <string name="appwidget_text">TEST</string>
+    <string name="add_widget">Add widget</string>
+
+    <!-- MainFragment -->
+    <string name="BASE_API_URL">https://d17h27t6h515a5.cloudfront.net</string>
+
+    <!-- IngredientsFragment -->
+    <string name="label_ingridients">Ingredients</string>
+    <string name="INGREDIENT_BUNDLE">INGREDIENT</string>
+    <string name="RECIPE_BUNDLE">RECIPE</string>
+    <string name="widget_added_msg">Widget added</string>
+
+    <!-- StepDetailFragment-->
+    <string name="STEP_BUNDLE">STEP</string>
+    <string name="step_detail_tittle">Step detail</string>
+
+
+</resources>
