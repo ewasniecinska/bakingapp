@@ -34,7 +34,6 @@ public class IngredientsFragment extends Fragment {
         tabletSize = getResources().getBoolean(R.bool.isTablet);
         orientation = getActivity().getResources().getConfiguration().orientation;
 
-
         getActivity().setTitle(getString(R.string.label_ingridients));
 
         getIngredientsList();
@@ -46,7 +45,7 @@ public class IngredientsFragment extends Fragment {
     }
 
     public void setUpRecycleView(View view){
-        mRecyclerView = view.findViewById(R.id.recyclerView);
+        mRecyclerView = view.findViewById(R.id.recycler_view);
         gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 1);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setAdapter(new IngredientsAdapter(ingredients));
@@ -59,9 +58,6 @@ public class IngredientsFragment extends Fragment {
             Intent intent = getActivity().getIntent();
             ingredients = intent.getParcelableArrayListExtra(getString(R.string.INGREDIENT_BUNDLE));
         }
-
-
-
     }
 
 

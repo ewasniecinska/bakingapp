@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -27,6 +28,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.popular.android.baking_app.R;
 import com.popular.android.baking_app.models.Step;
+import com.squareup.picasso.Picasso;
 
 
 public class StepDetailFragment extends Fragment {
@@ -35,6 +37,9 @@ public class StepDetailFragment extends Fragment {
     private SimpleExoPlayer mExoPlayer;
     TextView textView;
     CardView cardView;
+    private long mCurrentPosition = 0;
+    private boolean mPlayWhenReady = true;
+    ImageView thumbnailImage;
 
 
 
@@ -43,6 +48,11 @@ public class StepDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_step_detail, container, false);
 
         getActivity().setTitle(getString(R.string.step_detail_tittle));
+
+        if (savedInstanceState != null && savedInstanceState.containsKey("POSITION_KEY")) {
+            mCurrentPosition = savedInstanceState.getLong("POSITION_KEY");
+            mPlayWhenReady = savedInstanceState.getBoolean("PLAY_WHEN_READY_KEY");
+        }
 
         // get Step data from intent
         Intent intent = getActivity().getIntent();
@@ -68,17 +78,25 @@ public class StepDetailFragment extends Fragment {
     public void updateUI(View view) {
         textView = view.findViewById(R.id.text_description);
         cardView = view.findViewById(R.id.cardView2);
+        thumbnailImage = view.findViewById(R.id.thumbnail_image);
         textView.setText(step.getDescription());
         simpleExoPlayerView = view.findViewById(R.id.exoplayer_view);
 
+        if (!step.getThumbnailURL().isEmpty()) {
+            Picasso.with(getActivity().getApplicationContext())
+                    .load(step.getThumbnailURL())
+                    .placeholder(R.drawable.food_icon)
+                    .into(thumbnailImage);
+            thumbnailImage.setVisibility(View.VISIBLE);
+        }
         checkAndStartPlayer();
+
+
     }
 
     public void checkAndStartPlayer(){
-
-
         if(step.getVideoURL().isEmpty()){
-            simpleExoPlayerView.setVisibility(View.GONE);
+            simpleExoPlayerView.setVisibility(View.INVISIBLE);
         } else {
             initializePlayer(Uri.parse(step.getVideoURL()));
             showVideoInFullScreen();
@@ -104,12 +122,18 @@ public class StepDetailFragment extends Fragment {
             LoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity().getApplicationContext(), trackSelector, loadControl);
             simpleExoPlayerView.setPlayer(mExoPlayer);
+
             // Prepare the MediaSource.
             String userAgent = Util.getUserAgent(getActivity().getApplicationContext(), "Awesome Baking");
             MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
                     getActivity().getApplicationContext(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
+
+            if (mCurrentPosition != 0){
+                mExoPlayer.seekTo(mCurrentPosition);
+            }
+            mExoPlayer.setPlayWhenReady(mPlayWhenReady);
+
         }
     }
 
@@ -127,11 +151,23 @@ public class StepDetailFragment extends Fragment {
 
     private void releasePlayer() {
         if(mExoPlayer != null){
+            mPlayWhenReady = mExoPlayer.getPlayWhenReady();
+            mCurrentPosition = mExoPlayer.getCurrentPosition();
+
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong("POSITION_KEY", mCurrentPosition);
+        outState.putBoolean("PLAY_WHEN_READY_KEY", mPlayWhenReady);
+    }
+
 
 
 }

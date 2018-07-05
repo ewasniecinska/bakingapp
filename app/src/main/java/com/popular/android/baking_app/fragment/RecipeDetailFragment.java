@@ -85,14 +85,9 @@ public class RecipeDetailFragment extends Fragment  {
                         intentIng.putExtra(getString(R.string.INGREDIENT_BUNDLE), recipe.getIngredients());
                         startActivity(intentIng);
                     }
-
-
                 }
             });
 
-
-
-        // list of steps
         setUpRecycleView(view);
 
         return view;
@@ -114,7 +109,7 @@ public class RecipeDetailFragment extends Fragment  {
     public void setUpRecycleView(View view){
         ArrayList<Step> steps = recipe.getSteps();
 
-        final RecyclerView mRecyclerView = view.findViewById(R.id.recyclerView);
+        final RecyclerView mRecyclerView = view.findViewById(R.id.recycyle_view_ingredients);
         gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 1);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setAdapter(new StepsAdapter(steps));

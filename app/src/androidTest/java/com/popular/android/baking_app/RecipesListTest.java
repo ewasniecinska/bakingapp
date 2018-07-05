@@ -1,14 +1,10 @@
 package com.popular.android.baking_app;
 
 
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +13,9 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static com.popular.android.baking_app.Delay.waitTime;
 
 
 /**
@@ -25,19 +23,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
  */
 
 @RunWith(AndroidJUnit4.class)
-public class RecipeTest {
+public class RecipesListTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule =
             new ActivityTestRule<>(MainActivity.class);
-
-    private IdlingResource mIdlingResource;
-
-    @Before
-    public void registerIdlingResource() {
-        mIdlingResource = mActivityTestRule.getActivity().getIdlingResource();
-        Espresso.registerIdlingResources(mIdlingResource);
-    }
 
     @Test
     public void testRecycleViewIfDisplayed(){
@@ -48,20 +38,9 @@ public class RecipeTest {
     @Test
     public void testRecycleViewCheckClick(){
 
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
+        onView(isRoot()).perform(waitTime(5000));
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
-        onView(withId(R.id.recipe_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.recycyle_view_ingredients)).check(matches(isDisplayed()));
     }
-
-    @After
-    public void unregisterIdlingResource() {
-        if (mIdlingResource != null) {
-            Espresso.unregisterIdlingResources(mIdlingResource);
-        }
-    }
-
-
-
-
-
-
 }

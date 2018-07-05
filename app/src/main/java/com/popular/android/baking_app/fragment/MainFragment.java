@@ -13,17 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.popular.android.baking_app.MainActivity;
 import com.popular.android.baking_app.R;
 import com.popular.android.baking_app.adapter.RecipesAdapter;
 import com.popular.android.baking_app.api.Service;
-import com.popular.android.baking_app.idle_resources.Idle;
 import com.popular.android.baking_app.models.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,20 +39,12 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(this, view);
 
         final RecyclerView mRecyclerView = view.findViewById(R.id.recycler_view);
 
         gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), calculateNoOfColumns(getActivity().getApplicationContext()));
 
         mRecyclerView.setLayoutManager(gridLayoutManager);
-
-        Idle idlingResource = ((MainActivity)getActivity()).getIdlingResource();
-
-        if (idlingResource != null) {
-            idlingResource.setIdleState(false);
-        }
-
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.BASE_API_URL))
@@ -78,9 +67,7 @@ public class MainFragment extends Fragment {
             public void onFailure(Call<List<Recipe>> call, Throwable throwable) {
             }
         });
-
         return view;
-
     }
 
     public int calculateNoOfColumns(Context context){
@@ -99,7 +86,4 @@ public class MainFragment extends Fragment {
             return 1;
         }
     }
-
-
-
 }

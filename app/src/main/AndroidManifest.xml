@@ -21,15 +21,18 @@
         <activity
             android:name=".RecipeDetailActivity"
             android:label="@string/title_activity_details"
-            android:theme="@style/AppTheme.ActionBar" />
+            android:theme="@style/AppTheme.ActionBar"
+            android:parentActivityName="com.popular.android.baking_app.MainActivity" />
         <activity
             android:name=".StepDetailActivity"
             android:label="@string/title_activity_step"
-            android:theme="@style/AppTheme.ActionBar" />
+            android:theme="@style/AppTheme.ActionBar"
+            android:parentActivityName="com.popular.android.baking_app.RecipeDetailActivity"/>
         <activity
             android:name=".IngredientsActivity"
             android:label="@string/title_activity_step"
-            android:theme="@style/AppTheme.ActionBar" />
+            android:theme="@style/AppTheme.ActionBar"
+            android:parentActivityName="com.popular.android.baking_app.RecipeDetailActivity"/>
 
         <receiver android:name=".widget.RecipeAppWidget">
             <intent-filter>
